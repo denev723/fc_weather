@@ -1,4 +1,7 @@
 import { WeatherAdapterInterface } from "@/api/weather/types";
+import { ForecastSection } from "@/domains/weather/ForecastSection";
+import { Header } from "@/domains/weather/Header";
+import { LiveSection } from "@/domains/weather/LiveSection";
 import { mergeForecastWithShortTermForecast } from "@/domains/weather/utils";
 import { FC } from "react";
 
@@ -10,15 +13,18 @@ interface Props {
   merged_forecast: Awaited<
     ReturnType<typeof mergeForecastWithShortTermForecast>
   >;
+  update_time: string;
 }
 
 const WeatherMain: FC<Props> = (props) => {
-  const { live, today_temperature, merged_forecast } = props;
+  const { live, today_temperature, merged_forecast, update_time } = props;
   console.log(live, today_temperature, merged_forecast);
 
   return (
     <main>
-      <h1>Weather</h1>
+      <Header update_time={update_time} />
+      <LiveSection live={live} today_temperature={today_temperature} />
+      <ForecastSection forecast_list={merged_forecast} />
     </main>
   );
 };
