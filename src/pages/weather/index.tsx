@@ -8,6 +8,13 @@ import dayjs from "dayjs";
 import { GetStaticProps } from "next";
 import { ComponentProps, FC } from "react";
 import { OpenAI } from "openai";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
+dayjs.tz.setDefault("Asia/Seoul");
 
 interface Props extends ComponentProps<typeof WeatherMain> {}
 
@@ -57,7 +64,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
       live,
       today_temperature,
       merged_forecast,
-      update_time: dayjs().format("YYYY-MM-DD HH:mm:ss"),
+      update_time: dayjs().tz().format("YYYY-MM-DD HH:mm:ss"),
       image_data_url,
     },
     revalidate: 60 * 60,
